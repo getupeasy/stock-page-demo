@@ -22,9 +22,9 @@ type Props = Readonly<{
 function useTitle(stockId: string) {
   const [title, setTitle] = useState('加載中...');
   useEffect(() => {
-    const req = getStocks(stockId);
+    const req = getStocks<Stock[]>(stockId);
     req.promise.then(res => {
-      if (res.err) {
+      if (!res || res.err) {
         setTitle('請求數據失敗');
       } else if (!res.data || !res.data.length) {
         setTitle('未找到相關股票');

@@ -1,9 +1,20 @@
 
 import { DataSource } from '@/types';
+
 /**
- * 請求數據緩存，避免短時間内重複進行相同的請求
+ * 可以中斷的请求对象
  */
-let cacheMap: Map<string, { data: object, expiredAt: number }>;
+type CanAbortReq<T extends object> = {
+  /**
+   * 发起中断的方法
+   * @returns 
+   */
+  abort: () => void,
+  /**
+   * 获取结果的promise
+   */
+  promise: Promise<{ data?: T, err?: Error } | null>
+}
 
 /**
  * 發起請求是的配置
@@ -18,6 +29,11 @@ type GetOptions = {
    */
   abortSignal?: AbortSignal;
 }
+
+/**
+ * 請求數據緩存，避免短時間内重複進行相同的請求
+ */
+let cacheMap: Map<string, { data: object, expiredAt: number }>;
 
 /**
  * 默認緩存時間一分鐘
@@ -152,7 +168,7 @@ export function get(url: string, cacheDuration = DEFAULT_CACHE_DURATION) {
  * @param keyword 關鍵字
  * @returns 
  */
-export function getStocks(keyword: string) {
+export function getStocks<T extends object>(keyword: string): CanAbortReq<T> {
   return get(`/api/search-stock?keyword=${keyword}`);
 }
 /**
@@ -162,6 +178,6 @@ export function getStocks(keyword: string) {
  * @param endDate 結束時間
  * @returns 
  */
-export function getMonthlyRevenue(keyword: string, startDate: string, endDate: string) {
+export function getMonthlyRevenue<T extends object>(keyword: string, startDate: string, endDate: string): CanAbortReq<T> {
   return get(`/api/monthly-revenue?stock-id=${keyword}&start-date=${startDate}&end-date=${endDate}`);
 }

@@ -69,9 +69,9 @@ function useSearchMonthlyRevenue(stockId: string, yearRange: number) {
   const [message, setMessage] = useState('加載中...');
   useEffect(() => {
     const { startDate, endDate } = resolveYearRange(yearRange);
-    const req = getMonthlyRevenue(stockId, startDate, endDate);
+    const req = getMonthlyRevenue<MonthlyRevenueRawData[]>(stockId, startDate, endDate);
     req.promise.then(res => {
-      if (res.err) {
+      if (!res || res.err) {
         setMessage('請求數據失敗');
       } else if (!res.data || !res.data.length) {
         setMessage('未找到相關數據');

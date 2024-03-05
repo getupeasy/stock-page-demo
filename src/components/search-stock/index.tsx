@@ -87,9 +87,9 @@ function useSearchStocks(keyword: string) {
       return;
     }
     setLoading(true);
-    const req = getStocks(debouncedKeyword);
+    const req = getStocks<Stock[]>(debouncedKeyword);
     req.promise.then(res => {
-      if (res.err) {
+      if (!res || res.err) {
         enqueueSnackbar('請求數據失敗', { variant: 'error' });
       } else if (!res.data || !res.data.length) {
         enqueueSnackbar('未找到相關股票', { variant: 'info' });
