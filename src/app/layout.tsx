@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ overflowX: 'hidden' }}>
-        <span style={{ display: 'none' }}>sign:a</span>
+        <span style={{ display: 'none' }}>sign:b</span>
         <CssBaseline>
           <MuiThemeProvider>
             {children}

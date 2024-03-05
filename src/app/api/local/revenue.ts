@@ -37,7 +37,7 @@ function fakeLocalRevenue() {
       revenue_month: month
     });
   }
-  return data.reverse();
+  return data;
 }
 
 /**
@@ -55,5 +55,5 @@ export function findLocalRevenue(id: string, startDate: string, endDate: string)
   }
   const yearCount = Number(endDate.split('-')[0]) - Number(startDate.split('-')[0]);
   const monthCount = yearCount * 12;
-  return data.slice(0, monthCount);
+  return data.slice(0, monthCount).reverse();
 }
